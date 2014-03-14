@@ -4,6 +4,10 @@
 *.jar
 *.war
 *.ear
+
+# 
+!Problem1/testPackage/test/*.class
+
 # ===== Start Global/Eclipse.gitignore =====
 *.pydevproject
 .metadata

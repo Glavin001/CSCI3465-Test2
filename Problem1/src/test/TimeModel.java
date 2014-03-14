@@ -7,6 +7,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.lang.reflect.*;
 
+import javax.swing.text.html.HTMLDocument.Iterator;
+
 import test.*;
 
 public class TimeModel {
@@ -18,13 +20,15 @@ public class TimeModel {
 	private int minutes;
 	private int seconds;
 	
-	private ArrayList<TimeView> observes;
+	private ArrayList<TimeObserver> observers;
 	
 	/**
 	 * @param hostname
 	 */
 	public TimeModel(final String host, final Integer port )
 	{
+		observers = new ArrayList<TimeObserver>();
+		
 		new Thread() {
 			public void run()
 			{
@@ -36,20 +40,12 @@ public class TimeModel {
 					
 					while(isRunning())
 					{
+						System.out.println("Test");
 						try
 						{
 							Object b = (Object) a.readObject();
 							Class<?> c = b.getClass();
-							
 							System.out.println(c.getName());
-							Method[] dMethods = c.getDeclaredMethods();
-					        for (int i = 0; i < dMethods.length; i++)
-					        {
-					        	Method m = dMethods[i];
-					            Object j = (Object) m.invoke(b, null);
-					            System.out.println(m.getName() +": "+ j);
-					        }
-
 							
 							if (c.equals(StringTime.class))
 							{
@@ -58,6 +54,7 @@ public class TimeModel {
 								 * getM()
 								 * getS()
 								 */
+								updateValues(b, "getH", "getM", "getS");
 							}
 							else if (c.equals(SecondsClock.class))
 							{
@@ -66,6 +63,7 @@ public class TimeModel {
 								 * getMinutes()
 								 * getSeconds()
 								 */
+								updateValues(b, "getHours", "getMinutes", "getSeconds");
 							}
 							else if (c.equals(OddTime.class))
 							{
@@ -74,6 +72,7 @@ public class TimeModel {
 								 * second()
 								 * third()
 								 */
+								updateValues(b, "first", "second", "third");
 							}
 							else if (c.equals(OtherTime.class))
 							{
@@ -82,6 +81,7 @@ public class TimeModel {
 								 * bigHand()
 								 * longSkinnyHand()
 								 */
+								updateValues(b, "littleHand", "bigHand", "longSkinnyHand");
 							}
 							else
 							{
@@ -95,12 +95,6 @@ public class TimeModel {
 							e.printStackTrace();
 							System.exit(1);
 						} catch (IllegalArgumentException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (IllegalAccessException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (InvocationTargetException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
@@ -130,6 +124,15 @@ public class TimeModel {
 	}
 	
 	/**
+	 * 
+	 * @param to
+	 */
+	public void registerObserver(TimeObserver to)
+	{
+		observers.add(to);
+	}
+	
+	/**
 	 * HELPER
 	 * @param i
 	 */
@@ -151,14 +154,88 @@ public class TimeModel {
         }
 	}
 	
+	private void updateValues(Object k, String hoursMethodName, String minutesMethodName, String secondsMethodName)
+	{
+		try {
+			// 
+			hours = extractValue(k, hoursMethodName);
+			minutes = extractValue(k, minutesMethodName);
+			seconds = extractValue(k, secondsMethodName);
+			
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			
+			// Observer Pattern: Broadcast notification to all observers.
+			broadcastUpdate();
+			
+		}
+		
+	}
+	
+	/**
+	 * 
+	 * @param k
+	 * @param methodName
+	 * @return
+	 * @throws IllegalArgumentException
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 * @throws SecurityException
+	 * @throws NoSuchMethodException
+	 */
+	private int extractValue(Object k, String methodName) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, SecurityException, NoSuchMethodException
+	{
+		Class<?> c = k.getClass();
+		Method m = c.getMethod(methodName, null);
+	    Object j = (Object) m.invoke(k, null);
+        return (Integer) j;
+	}
+	
+	/**
+	 * 
+	 */
+	private void broadcastUpdate()
+	{
+		for (TimeObserver t : observers)
+		{
+			t.refreshTime();
+		}
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getHours() {
 		return hours;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getMinutes() {
 		return minutes;
 	}
-
+	
+	/**
+	 * 
+	 * @return
+	 */
 	public int getSeconds() {
 		return seconds;
 	}
