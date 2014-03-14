@@ -40,7 +40,6 @@ public class TimeModel {
 					
 					while(isRunning())
 					{
-						System.out.println("Test");
 						try
 						{
 							Object b = (Object) a.readObject();
