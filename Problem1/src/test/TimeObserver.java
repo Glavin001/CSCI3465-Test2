@@ -8,10 +8,10 @@ package test;
  *
  */
 public interface TimeObserver {
-	
-	/**
-	 * Notify observer that it should request the new value and re-render.
-	 */
-	public void refreshTime();
-	
+    
+    /**
+     * Notify observer that it should request the new value and re-render.
+     */
+    public void refreshTime();
+    
 }
