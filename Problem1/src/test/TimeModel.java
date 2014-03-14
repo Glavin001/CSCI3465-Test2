@@ -32,11 +32,14 @@ public class TimeModel {
     {
         observers = new ArrayList<TimeObserver>();
         
+        // Reading with Socket is a Blocking operation
+        // So put it on a separate thread.
         new Thread() {
             public void run()
             {
                 try
                 {
+                    // Connect to Socket server
                     System.out.println("Starting Connection");
                     Socket s = new Socket(host, port);
                     ObjectInputStream a = new ObjectInputStream(s.getInputStream());
@@ -45,10 +48,12 @@ public class TimeModel {
                     {
                         try
                         {
+                            // Read a time object from server
                             Object b = (Object) a.readObject();
                             Class<?> c = b.getClass();
                             System.out.println(c.getName());
                             
+                            // Polymorphism: Perform operations based on class type.
                             if (c.equals(StringTime.class))
                             {
                                 /**

@@ -15,8 +15,11 @@ public class TimeView extends JLabel implements TimeObserver {
      */
     public TimeView(TimeModel t)
     {
+        // Remember the model that is observing
         time = t;
+        // Register with the Model as an observer
         time.registerObserver(this);
+        // Refresh the display for the first time
         refreshTime();
     }
 

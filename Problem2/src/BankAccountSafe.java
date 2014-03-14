@@ -9,7 +9,8 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  */
 public class BankAccountSafe extends BankAccount {
-
+    
+    // Create a Lock for this class
     private final ReentrantLock lock =  new ReentrantLock(); 
 
     /**
@@ -18,9 +19,9 @@ public class BankAccountSafe extends BankAccount {
      */
     public void deposit(Double money)
     {
-        lock.lock();
-        balance += money;
-        lock.unlock();
+        lock.lock();      // Lock
+        balance += money; // Operation
+        lock.unlock();    // Unlock
     }
     
     /**
@@ -29,16 +30,17 @@ public class BankAccountSafe extends BankAccount {
      */
     public boolean withdraw(Double money)
     {
-        lock.lock();
+        lock.lock();          // Lock
+        // Operation
         if (balance >= money)
         {
             balance -= money;
-            lock.unlock();
+            lock.unlock(); // Unlock
             return true;
         }
         else
         {
-            lock.unlock();
+            lock.unlock(); // Unlock
             return false;
         }
     }
