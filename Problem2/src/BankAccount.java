@@ -8,13 +8,19 @@
  */
 public class BankAccount implements Comparable {
 
-	private Double balance;
+	protected Double balance;
 	
+	/**
+	 * 
+	 */
 	public BankAccount()
 	{
 		balance = 0.00;
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	public int compareTo(Object other) {
 		return this.getBalance() > ((BankAccount) other).getBalance() ? 1 : -1;
