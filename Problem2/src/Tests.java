@@ -64,7 +64,7 @@ public class Tests {
 		}
 		else
 		{
-			//System.out.println("Pass.");
+			System.out.println("Test 2a: Passed.");
 		}
 
 		/*
@@ -123,13 +123,14 @@ public class Tests {
         } while (waiting);
 		
         double goalBalance = (10*1000*(11.00-1.00));
-        System.out.println("Balance is: "+b.getBalance());        
-        System.out.println("Balance should be: "+goalBalance);
+        //System.out.println("Balance is: "+b.getBalance());        
+        //System.out.println("Balance should be: "+goalBalance);
         
         if (b.getBalance() != goalBalance)
         {
         	// Intentional failure, as per Problem 2b.
         	//fail("Balance is not what the balance should be.");
+			System.out.println("Test 2b: Passed.");
         }
         else
         {
@@ -184,13 +185,17 @@ public class Tests {
         } while (waiting);
 		
         double goalBalance = (10*1000*(11.00-1.00));
-        System.out.println("Balance is: "+b.getBalance());        
-        System.out.println("Balance should be: "+goalBalance);
+        //System.out.println("Balance is: "+b.getBalance());        
+        //System.out.println("Balance should be: "+goalBalance);
         
         if (b.getBalance() != goalBalance)
         {
         	// Intentional failure, as per Problem 2b.
         	fail("Balance is not what the balance should be.");
+        }
+        else
+        {
+			System.out.println("Test 2c: Passed.");
         }
         
 	}

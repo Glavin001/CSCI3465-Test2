@@ -7,23 +7,26 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.lang.reflect.*;
 
-import javax.swing.text.html.HTMLDocument.Iterator;
-
 import test.*;
 
 public class TimeModel {
 
 	/**
-	 * 
+	 * Fields
 	 */
 	private int hours;
 	private int minutes;
 	private int seconds;
-	
+	/**
+	 * Observer Pattern
+	 * See more below.
+	 */
 	private ArrayList<TimeObserver> observers;
 	
 	/**
-	 * @param hostname
+	 * Constructor
+	 * @param host
+	 * @param port
 	 */
 	public TimeModel(final String host, final Integer port )
 	{
@@ -114,7 +117,7 @@ public class TimeModel {
 	}
 
 	/**
-	 * 
+	 * Check if currently running.
 	 * @return
 	 */
 	public boolean isRunning()
@@ -123,7 +126,7 @@ public class TimeModel {
 	}
 	
 	/**
-	 * 
+	 * Register Observer.
 	 * @param to
 	 */
 	public void registerObserver(TimeObserver to)
@@ -132,8 +135,8 @@ public class TimeModel {
 	}
 	
 	/**
-	 * HELPER
-	 * @param i
+	 * Helper method. Prints out methods of class.
+	 * @param c
 	 */
 	private void inspectClass(Class c)
 	{
@@ -153,6 +156,13 @@ public class TimeModel {
         }
 	}
 	
+	/**
+	 * Extract the time values from the instance given the respective method names.
+	 * @param k
+	 * @param hoursMethodName
+	 * @param minutesMethodName
+	 * @param secondsMethodName
+	 */
 	private void updateValues(Object k, String hoursMethodName, String minutesMethodName, String secondsMethodName)
 	{
 		try {
@@ -186,10 +196,10 @@ public class TimeModel {
 	}
 	
 	/**
-	 * 
+	 * Get the return value of a method by name.
 	 * @param k
 	 * @param methodName
-	 * @return
+	 * @return Value returned from specified method.
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 * @throws InvocationTargetException
@@ -205,7 +215,7 @@ public class TimeModel {
 	}
 	
 	/**
-	 * 
+	 * Observer Pattern: notify all observers.
 	 */
 	private void broadcastUpdate()
 	{
@@ -216,7 +226,7 @@ public class TimeModel {
 	}
 	
 	/**
-	 * 
+	 * Get the hours.
 	 * @return
 	 */
 	public int getHours() {
@@ -224,7 +234,7 @@ public class TimeModel {
 	}
 	
 	/**
-	 * 
+	 * Get the minutes.
 	 * @return
 	 */
 	public int getMinutes() {
@@ -232,7 +242,7 @@ public class TimeModel {
 	}
 	
 	/**
-	 * 
+	 * Get the seconds.
 	 * @return
 	 */
 	public int getSeconds() {

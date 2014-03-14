@@ -1,17 +1,16 @@
 /**
- * 
- */
-
-/**
  * @author Glavin Wiechert
  *
  */
 public class BankAccount implements Comparable {
 
+	/**
+	 * Fields
+	 */
 	protected Double balance;
 	
 	/**
-	 * 
+	 * Constructor
 	 */
 	public BankAccount()
 	{
@@ -19,7 +18,8 @@ public class BankAccount implements Comparable {
 	}
 	
 	/**
-	 * 
+	 * Allows sorting by increasing balance.
+	 * @param other
 	 */
 	@Override
 	public int compareTo(Object other) {
@@ -27,7 +27,7 @@ public class BankAccount implements Comparable {
 	}
 	
 	/**
-	 * 
+	 * Deposit money.
 	 * @param money
 	 */
 	public void deposit(Double money)
@@ -36,7 +36,7 @@ public class BankAccount implements Comparable {
 	}
 	
 	/**
-	 * 
+	 * Withdraw money.
 	 * @param money
 	 */
 	public boolean withdraw(Double money)
@@ -48,20 +48,18 @@ public class BankAccount implements Comparable {
 		}
 		else
 		{
+			System.out.println("Insufficient funds.");
 			return false;
 		}
 	}
 	
 	/**
-	 * 
+	 * Get the current balance.
 	 * @return
 	 */
 	public Double getBalance()
 	{
 		return balance;
 	}
-	
-	
-	
 	
 }
